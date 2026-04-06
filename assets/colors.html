@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Color + Grouped Icon Preview</title>
+
+    <!-- ✅ Proper Material Icons import -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      h2 {
+        margin-top: 40px;
+        margin-bottom: 10px;
+      }
+      h3 {
+        margin-top: 25px;
+        margin-bottom: 10px;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+        gap: 6px;
+      }
+      .swatch {
+        width: 80px;
+        height: 40px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+      .label {
+        width: 110px;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+
+      /* Icon grid */
+      .icon-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 14px;
+        margin-top: 10px;
+        margin-bottom: 30px;
+      }
+      .icon-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background: #fafafa;
+      }
+      .icon {
+        font-size: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>🎨 Color Palette Preview</h2>
+
+    <script>
+      /* Your palette — unchanged */
+      const palette = {
+        Yellow: ['#FFF7DA', '#F3E1A5', '#E8CC6F', '#DCB63A', '#D0A004'],
+        Orange: ['#FFE8D8', '#F4C4A2', '#E9A06C', '#DD7C36', '#D25800'],
+        Brown: ['#F4EDE7', '#DCCAB4', '#C5A680', '#AD834D', '#955F19'],
+        Pink: ['#FFE4F0', '#F4B5D7', '#E986BD', '#DD56A4', '#D2278A'],
+        Red: ['#FFE0E3', '#EAA8B2', '#D47082', '#BF3851', '#A90020'],
+        Purple: ['#F2E6FF', '#D6C0F4', '#BA9BE8', '#9E75DD', '#824FD1'],
+        Teal: ['#E0F7F7', '#A9E5E5', '#72D4D4', '#3AC2C2', '#03B0B0'],
+        Blue: ['#E3F0FF', '#AACCF3', '#72A7E7', '#3983DB', '#005ECF'],
+        Green: ['#E3F8EF', '#AAE2C4', '#72CD99', '#39B76D', '#00A142'],
+        Grey: ['#F5F5F5', '#CECECE', '#A6A6A6', '#7F7F7F', '#575757'],
+      };
+
+      Object.entries(palette).forEach(([name, colors]) => {
+        const row = document.createElement('div');
+        row.className = 'row';
+
+        const label = document.createElement('div');
+        label.className = 'label';
+        label.innerText = name;
+
+        row.appendChild(label);
+
+        colors.forEach((col) => {
+          const swatch = document.createElement('div');
+          swatch.className = 'swatch';
+          swatch.style.background = col;
+          swatch.title = col;
+          row.appendChild(swatch);
+        });
+        document.body.appendChild(row);
+      });
+    </script>
+
+    <hr />
+
+    <h2>🖼 Filled Icon Preview (Grouped)</h2>
+
+    <!-- ✅ HOME & PROPERTY -->
+    <h3>🏠 Home & Property</h3>
+    <div class="icon-grid" id="home"></div>
+
+    <!-- ✅ TRANSPORT -->
+    <h3>🚗 Transportation</h3>
+    <div class="icon-grid" id="transport"></div>
+
+    <!-- ✅ FINANCE -->
+    <h3>💰 Finance & Payments</h3>
+    <div class="icon-grid" id="finance"></div>
+
+    <!-- ✅ FOOD -->
+    <h3>🍽 Food & Dining</h3>
+    <div class="icon-grid" id="food"></div>
+
+    <!-- ✅ SHOPPING -->
+    <h3>🛍 Shopping</h3>
+    <div class="icon-grid" id="shopping"></div>
+
+    <!-- ✅ HEALTH -->
+    <h3>❤️ Health & Personal</h3>
+    <div class="icon-grid" id="health"></div>
+
+    <!-- ✅ ENTERTAINMENT -->
+    <h3>🎬 Entertainment & Leisure</h3>
+    <div class="icon-grid" id="entertainment"></div>
+
+    <!-- ✅ UTILITIES -->
+    <h3>🧰 Work & Utilities</h3>
+    <div class="icon-grid" id="work"></div>
+
+    <!-- ✅ TECHNOLOGY -->
+    <h3>📱 Technology</h3>
+    <div class="icon-grid" id="tech"></div>
+
+    <script>
+      /* Your grouped icon data */
+      const groups = {
+        home: ['home', 'apartment', 'cottage', 'real-estate-agent', 'park'],
+        transport: [
+          'directions-car',
+          'directions-bus',
+          'train',
+          'local-taxi',
+          'airplanemode-on',
+          'local-parking',
+          'commute',
+        ],
+        finance: [
+          'account-balance',
+          'credit-card',
+          'monetization-on',
+          'payments',
+          'savings',
+          'wallet',
+          'wallet-giftcard',
+          'swap-horiz',
+          'swap-horizontal-circle',
+        ],
+        food: [
+          'fastfood',
+          'local-pizza',
+          'lunch-dining',
+          'flatware',
+          'icecream',
+          'liquor',
+          'local-grocery-store',
+          'local-dining',
+        ],
+        shopping: ['local-mall', 'discount', 'sell', 'redeem', 'gift'],
+        health: [
+          'medical-services',
+          'pets',
+          'toothbrush-paste',
+          'hiking',
+          'dumbbell',
+        ],
+        entertainment: [
+          'movie',
+          'music-note',
+          'piano',
+          'sports-soccer',
+          'theater-comedy',
+          'subscriptions',
+          'volunteer-activism',
+        ],
+        work: ['construction', 'offline-bolt', 'power'],
+        tech: ['phone-android', 'local-phone', 'laptop-chromebook', 'headset'],
+      };
+
+      /* Render icons (hyphens → underscores) */
+      function render(groupId, list) {
+        const container = document.getElementById(groupId);
+        list.forEach((name) => {
+          const div = document.createElement('div');
+          div.className = 'icon-item';
+
+          const icon = document.createElement('i');
+          icon.className = 'material-icons icon';
+          icon.innerText = name.replace(/-/g, '_');
+
+          const label = document.createElement('span');
+          label.innerText = name;
+
+          div.appendChild(icon);
+          div.appendChild(label);
+          container.appendChild(div);
+        });
+      }
+
+      /* Render all groups */
+      Object.entries(groups).forEach(([group, items]) => render(group, items));
+    </script>
+  </body>
+</html>

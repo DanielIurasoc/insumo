@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Slot, usePathname } from 'expo-router';
+import Head from 'expo-router/head';
 import { useFonts } from 'expo-font';
 import { View, Text, ActivityIndicator } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
@@ -12,6 +13,17 @@ SplashScreen.preventAutoHideAsync();
 export default function Layout() {
   const pathname = usePathname();
   const [appReady, setAppReady] = useState(false);
+
+  // mapping Head titles for web browser
+  const titles: Record<string, string> = {
+    '/': 'Insumo - Home',
+    '/dashboard': 'Insumo - Dashboard',
+    '/networth': 'Insumo - Net Worth Tracking',
+    '/settings': 'Insumo - Settings',
+  };
+
+  // update title based on current path
+  const pageTitle = titles[pathname] || 'Insumo';
 
   const [fontsLoaded] = useFonts({
     'jetbrains-100': require('../../assets/fonts/JetBrainsMono/JetBrainsMono-Thin.ttf'),
@@ -56,14 +68,20 @@ export default function Layout() {
   }
 
   return (
-    <View className='flex-1 bg-white dark:bg-black'>
-      <TopNavBar />
-      <View className='flex flex-col h-screen w-[80%] ms-[10%]'>
-        {/* ✅ All pages rendered here */}
-        <View className='flex-1 bg-white dark:bg-black'>
-          <Slot />
+    <React.Fragment>
+      <Head>
+        <title>{pageTitle}</title>
+      </Head>
+
+      <View className='flex-1 bg-white dark:bg-black'>
+        <TopNavBar />
+        <View className='flex flex-col h-screen w-[80%] ms-[10%]'>
+          {/* ✅ All pages rendered here */}
+          <View className='flex-1 bg-white dark:bg-black'>
+            <Slot />
+          </View>
         </View>
       </View>
-    </View>
+    </React.Fragment>
   );
 }

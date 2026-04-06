@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import { Slot, Link, usePathname } from 'expo-router';
+import { Link, usePathname } from 'expo-router';
 
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Logo from '../../assets/favicon.png';
+import Logo3 from '../../assets/logo_recolor.png';
 
 const TopNavBar = () => {
   const pathname = usePathname();
@@ -15,8 +15,8 @@ const TopNavBar = () => {
           className='px-2 flex flex-row justify-center items-center'
         >
           <Image
-            source={Logo}
-            style={{ width: 40, height: 40 }}
+            source={Logo3}
+            style={{ width: 90, height: 90 }}
             resizeMode='contain'
           />
           <Text className='text-3xl font-jetbrains-700'>insumo</Text>

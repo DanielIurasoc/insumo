@@ -1,0 +1,427 @@
+green: 	#26A86D
+red: 	#FE1684
+blue:	#3285F3
+steel:	#8E94B8
+steel:	#a08eb8
+dark:	#162045
+
+Database:
+SCHEMA V1:
+{
+	users: {
+		id: int
+		firstName: String
+		lastName: String
+		phone: String
+		email: String
+		createdAt: TimeStamp
+		wallets: []{
+			id: int
+			name: String
+			createdAt: TimeStamp
+			entries: []{
+				type: 'income' | 'expense' | 'saving'
+				category: String
+				amount: float?
+				date: TimeStamp
+				comment: String
+				??
+			}
+			runningTotal: float?
+		}
+	}
+}
+!!! ISSUES !!!
+- one single transaction edit requires complete database access and rewrite
+- querying data is hard
+- fields not complete
+
+SCHEMA V2:
+- differen tables for information (relational style):
+
+USERS {
+    userId: numeric,
+    name: String,
+    email: String,
+    phone: String,
+    passwordHash: String,
+    createdAt: Date,
+    dateOfBirth: Date,
+
+    mainCurrency: String,
+    darkMode: true | false,
+    transactionCategories: INT[] // not needed if standalone Categories table exists
+}
+
+WALLETS {
+    walletId: numeric,
+    userId: numeric,
+    name: String,
+    currency: String.
+    createdAt: Date,
+    updatedAt: Date
+}
+
+TRANSACTIONS {
+    transactionId: numeric,
+    walletId: numeric,
+    type: 'income' | 'expense' | 'saving' | 'transfer',
+    groupId: numeric,
+    amount: numeric,
+    categoryId: numeric,
+    date: Date,
+    comment: String,
+    createdAt: Date,
+    updatedAt: Date
+}
+
+CATEGORIES {
+    categoryId: numeric,
+    userId: numeric,
+    name: String,
+    type: 'income' | 'expense' | 'saving'
+    color: String   // hex or rgb code from a prefefined list,
+    icon: String    // icon name from a predefined list
+}
+
+COLORS {
+    code: String
+}
+
+ICONS {
+    iconId: String
+}
+
+sql commands:
+--  create users table:
+CREATE TABLE users (
+    userId                  SERIAL PRIMARY KEY,
+    name                    VARCHAR(255) NOT NULL,
+    email                   VARCHAR(255) UNIQUE NOT NULL,
+    phone                   VARCHAR(50),
+    passwordHash            TEXT NOT NULL,
+    createdAt               TIMESTAMP NOT NULL DEFAULT NOW(),
+    dateOfBirth             DATE,
+
+    mainCurrency            VARCHAR(10) DEFAULT 'EUR',
+    darkMode                BOOLEAN DEFAULT FALSE,
+    transactionCategories   INT[] DEFAULT '{}'
+);
+
+-- create wallets table
+CREATE TABLE wallets (
+    walletId    SERIAL PRIMARY KEY,
+    userId      INT NOT NULL REFERENCES users(userId) ON DELETE CASCADE,
+    name        VARCHAR(255) NOT NULL,
+    currency    VARCHAR(10) NOT NULL,
+    createdAt   TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedAt   TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- create transactions table
+CREATE TABLE transactions (
+    transactionId   SERIAL PRIMARY KEY,
+    walletId        INT NOT NULL REFERENCES wallets(walletId) ON DELETE CASCADE,
+    type            VARCHAR(20) NOT NULL CHECK (type IN ('income', 'expense', 'saving', 'transfer')),
+    groupId         INT,  -- nullable, used for linking transfers
+    amount          NUMERIC(12, 2) NOT NULL,
+    categoryId      INT REFERENCES categories(categoryId),
+    date            TIMESTAMP NOT NULL,
+    comment         TEXT,
+    createdAt       TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedAt       TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- create categories table
+CREATE TABLE categories (
+    categoryId  SERIAL PRIMARY KEY,
+    userId      INT NOT NULL REFERENCES users(userId) ON DELETE CASCADE,
+    name        VARCHAR(255) NOT NULL,
+    type        VARCHAR(20) NOT NULL CHECK (type IN ('income', 'expense', 'saving')),
+    colorId     INT REFERENCES colors(colorId),
+    iconId      INT REFERENCES icons(iconId)
+);
+
+-- create colors table
+CREATE TABLE colors (
+    colorId SERIAL PRIMARY KEY,
+    code VARCHAR(255) NOT NULL
+); 
+
+-- create icons table
+CREATE TABLE icons (
+    iconId SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+); 
+
+
+
+--################## add 100 shades into colors table ##################
+INSERT INTO colors (code) VALUES
+-- RED (1–10)
+('#FFE0E3'),
+('#FFBFC6'),
+('#FF9FAA'),
+('#FF7F8F'),
+('#FF5F74'),
+('#F44963'),
+('#E23252'),
+('#CF1C41'),
+('#BC072F'),
+('#A90020'),
+
+-- ORANGE (11–20)
+('#FFE8D8'),
+('#FFD7BD'),
+('#FFC7A3'),
+('#FFB68A'),
+('#FFA671'),
+('#F99659'),
+('#F08642'),
+('#E6762B'),
+('#DC6715'),
+('#D25800'),
+
+-- GOLD (21–30)
+('#FFF7DA'),
+('#FFEFC2'),
+('#FFE6A9'),
+('#FFDD91'),
+('#FAD379'),
+('#F3C961'),
+('#EBBF4A'),
+('#E2B432'),
+('#D9AA1B'),
+('#D0A004'),
+
+-- GREEN (31–40)
+('#E3F8EF'),
+('#C3F1DB'),
+('#A3EAC7'),
+('#83E3B4'),
+('#63DCA0'),
+('#49D28D'),
+('#2EC87A'),
+('#13BE67'),
+('#00B354'),
+('#00A142'),
+
+-- BLUE (41–50)
+('#E3F0FF'),
+('#C8E0FF'),
+('#ACD0FF'),
+('#90C0FF'),
+('#74B0F7'),
+('#589FEF'),
+('#3C8FE7'),
+('#207EDF'),
+('#046ED7'),
+('#005ECF'),
+
+-- PURPLE (51–60)
+('#F2E6FF'),
+('#E6D6FF'),
+('#D9C6FF'),
+('#CCA7FA'),
+('#BF98F4'),
+('#B389ED'),
+('#A77AE6'),
+('#9A6CDF'),
+('#8E5DD8'),
+('#824FD1'),
+
+-- GREY (61–70)
+('#F5F5F5'),
+('#E9E9E9'),
+('#DDDDDD'),
+('#D1D1D1'),
+('#C5C5C5'),
+('#B9B9B9'),
+('#ADADAD'),
+('#A1A1A1'),
+('#959595'),
+('#575757'),
+
+-- BROWN (71–80)
+('#F4EDE7'),
+('#EADDCF'),
+('#E0CDB8'),
+('#D6BEA1'),
+('#CBAD8A'),
+('#C19D73'),
+('#B68D5C'),
+('#AB7D45'),
+('#A06E2F'),
+('#955F19'),
+
+-- TEAL (81–90)
+('#E0F7F7'),
+('#C7F0F0'),
+('#AEE8E8'),
+('#96E0E0'),
+('#7DD8D8'),
+('#65D0D0'),
+('#4CC8C8'),
+('#34C0C0'),
+('#1BB8B8'),
+('#03B0B0'),
+
+-- PINK (91–100)
+('#FFE4F0'),
+('#FFD1E7'),
+('#FFBDDD'),
+('#FCA9D3'),
+('#F593C7'),
+('#EE7EBA'),
+('#E768AE'),
+('#E053A2'),
+('#D93D96'),
+('#D2278A');
+``
+
+--################## add 50 shades into colors table ##################
+INSERT INTO colors (code) VALUES
+-- Yellow (1–5)
+('#FFF7DA'),
+('#F3E1A5'),
+('#E8CC6F'),
+('#DCB63A'),
+('#D0A004'),
+
+-- Orange (6–10)
+('#FFE8D8'),
+('#F4C4A2'),
+('#E9A06C'),
+('#DD7C36'),
+('#D25800'),
+
+-- Brown (11–15)
+('#F4EDE7'),
+('#DCCAB4'),
+('#C5A680'),
+('#AD834D'),
+('#955F19'),
+
+-- Pink (16–20)
+('#FFE4F0'),
+('#F4B5D7'),
+('#E986BD'),
+('#DD56A4'),
+('#D2278A'),
+
+-- Red (21–25)
+('#FFE0E3'),
+('#EAA8B2'),
+('#D47082'),
+('#BF3851'),
+('#A90020'),
+
+-- Purple (26–30)
+('#F2E6FF'),
+('#D6C0F4'),
+('#BA9BE8'),
+('#9E75DD'),
+('#824FD1'),
+
+-- Teal (31–35)
+('#E0F7F7'),
+('#A9E5E5'),
+('#72D4D4'),
+('#3AC2C2'),
+('#03B0B0'),
+
+-- Blue (36–40)
+('#E3F0FF'),
+('#AACCF3'),
+('#72A7E7'),
+('#3983DB'),
+('#005ECF'),
+
+-- Green (41–45)
+('#E3F8EF'),
+('#AAE2C4'),
+('#72CD99'),
+('#39B76D'),
+('#00A142'),
+
+-- Grey (46–50)
+('#F5F5F5'),
+('#CECECE'),
+('#A6A6A6'),
+('#7F7F7F'),
+('#575757');
+
+
+
+--######################### icons list (material icons) --#########################
+INSERT INTO icons (name) VALUES
+-- 🏠 Home & Property
+('home'),
+('apartment'),
+('cottage'),
+('real-estate-agent'),
+('park'),
+
+-- 🚗 Transportation
+('directions-car'),
+('directions-bus'),
+('train'),
+('local-taxi'),
+('airplanemode-on'),
+('local-parking'),
+('commute'),
+
+-- 💰 Finance & Payments
+('account-balance'),
+('credit-card'),
+('monetization-on'),
+('payments'),
+('savings'),
+('wallet'),
+('wallet-giftcard'),
+('swap-horiz'),
+('swap-horizontal-circle'),
+
+-- 🍽 Food & Dining
+('fastfood'),
+('local-pizza'),
+('lunch-dining'),
+('flatware'),
+('icecream'),
+('liquor'),
+('local-grocery-store'),
+('local-dining'),
+
+-- 🛍 Shopping
+('local-mall'),
+('discount'),
+('sell'),
+('redeem'),
+('gift'),
+
+-- ❤️ Health, Pets & Personal Care
+('medical-services'),
+('pets'),
+('toothbrush-paste'),
+('hiking'),
+('dumbbell'),
+
+-- 🎬 Entertainment & Leisure
+('movie'),
+('music-note'),
+('piano'),
+('sports-soccer'),
+('theater-comedy'),
+('subscriptions'),
+('volunteer-activism'),
+
+-- 🧰 Work & Utilities
+('construction'),
+('offline-bolt'),
+('power'),
+
+-- 📱 Technology
+('phone-android'),
+('local-phone'),
+('laptop-chromebook'),
+('headset');
