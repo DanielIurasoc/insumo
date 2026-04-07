@@ -6,7 +6,7 @@ import { View, Text, ActivityIndicator } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import '../../global.css';
 
-import TopNavBar from '../components/topNavBar';
+import TopNavBar from '../components/TopNavBar';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -75,7 +75,7 @@ export default function Layout() {
 
       <View className='flex-1 bg-white dark:bg-black'>
         <TopNavBar />
-        <View className='flex flex-col h-screen w-[80%] ms-[10%]'>
+        <View className='flex flex-col h-screen w-[100%] '>
           {/* ✅ All pages rendered here */}
           <View className='flex-1 bg-white dark:bg-black'>
             <Slot />

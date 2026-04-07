@@ -1,10 +1,20 @@
-import { View, Text } from 'react-native';
-import React from 'react';
+import { View, Text, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { useTheme } from '../hooks/useTheme';
 
 const settings = () => {
+  const [dark, setDark] = useState(false);
+  useTheme(dark);
+
   return (
     <View className='justify-center items-center flex-1 p-4 bg-white dark:bg-black'>
-      <Text>settings</Text>
+      <Text className='text-black dark:text-white mb-6'>Dark mode toggle</Text>
+      <Pressable
+        onPress={() => setDark(!dark)}
+        className='px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded'
+      >
+        <Text className='text-black dark:text-white'>Switch Theme</Text>
+      </Pressable>
     </View>
   );
 };
