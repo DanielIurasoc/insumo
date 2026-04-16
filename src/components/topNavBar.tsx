@@ -8,7 +8,7 @@ import Logo3 from '../../assets/logo_recolor.png';
 const TopNavBar = () => {
   const pathname = usePathname();
   return (
-    <View className='flex flex-row justify-between items-center w-[100%] h-20 px-[10%] bg-green-50'>
+    <View className='fixed top-0 left-0 right-0 z-50 flex flex-row justify-between items-center w-full h-20 bg-green-50 px-[10%]'>
       <View className='flex justify-center items-center'>
         <Link
           href='/'
@@ -22,7 +22,7 @@ const TopNavBar = () => {
           <Text className='text-3xl font-jetbrains-700'>insumo</Text>
         </Link>
       </View>
-      <View className='flex flex-row justify-evenly items-center w-[500px]'>
+      <View className='flex-1 flex flex-row justify-center gap-10 items-center'>
         <Link href='/dashboard'>
           <Text
             className={
@@ -46,13 +46,15 @@ const TopNavBar = () => {
           </Text>
         </Link>
       </View>
-      <Link href='/settings'>
-        <MaterialCommunityIcons
-          name='cog'
-          size={40}
-          color={pathname === '/settings' ? '#22c55e' : '#6b7280'}
-        />
-      </Link>
+      <View>
+        <Link href='/settings'>
+          <MaterialCommunityIcons
+            name='cog'
+            size={40}
+            color={pathname === '/settings' ? '#22c55e' : '#6b7280'}
+          />
+        </Link>
+      </View>
     </View>
   );
 };

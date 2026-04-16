@@ -78,11 +78,11 @@ export default function IndexScreen() {
           zIndex: 20,
         }}
       >
-        <EntryListHeader
+        {/* <EntryListHeader
           date={activeDate ?? ''}
-          height={headerHeight}
+          // height={headerHeight}
           isCollapsed={isCollapsed}
-        />
+        /> */}
       </Animated.View>
 
       <Animated.SectionList
@@ -105,13 +105,17 @@ export default function IndexScreen() {
             comment={item.comment}
           />
         )}
-        showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={true}
         contentContainerStyle={{
+          width: '100%',
           paddingTop:
             ENTRY_LIST_HEADER_MAX_HEIGHT - ENTRY_LIST_HEADER_MIN_HEIGHT,
-          paddingBottom: 80,
+          paddingBottom: 40,
         }}
-        style={{ width: '100%', paddingHorizontal: '20%', paddingBottom: 80 }}
+        style={{
+          width: '100%',
+          paddingHorizontal: '20%',
+        }}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           {

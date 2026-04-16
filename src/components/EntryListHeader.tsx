@@ -1,68 +1,72 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable } from 'react-native';
-import { Animated } from 'react-native';
-
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { ENTRY_LIST_HEADER_MIN_HEIGHT } from '../constants/constants';
+import {
+  ENTRY_LIST_HEADER_MIN_HEIGHT,
+  ENTRY_LIST_HEADER_MAX_HEIGHT,
+} from '../constants/constants';
 
-const EntryListHeader = ({
-  date,
-  height,
-  isCollapsed,
-}: {
+type Props = {
   date: string;
-  height: Animated.AnimatedInterpolation<number>;
-  isCollapsed: boolean;
-}) => {
+  height: number;
+};
+
+export default function EntryListHeader({ date, height }: Props) {
   const [showSearch, setShowSearch] = useState(false);
   const [searchText, setSearchText] = useState('');
 
   return (
-    <>
-      {showSearch && (
-        <Pressable
-          onPress={() => {
-            setShowSearch(false);
-            setSearchText('');
-          }}
-          style={{ position: 'absolute', inset: 0, zIndex: 1 }}
-        />
-      )}
+    <div
+      className='w-full bg-white border-b border-gray-200 overflow-hidden'
+      style={{ height }}
+    >
+      {/* Centered inner container (matches list width) */}
+      <div className='mx-auto max-w-[1100px] h-full px-6 flex flex-col justify-end'>
+        {/* EXPANDED CONTENT */}
+        <div
+          // className={`
+          //   flex-1 flex items-center justify-center transition-opacity duration-150
+          //   ${isCollapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'}
+          // `}
+          className={'flex-1 flex items-center justify-center'}
+        >
+          <div className='w-full max-w-[600px] rounded-lg bg-gray-100 p-4 text-center'>
+            <strong>Stuff I want to hide</strong>
+            <p className='text-sm mt-1 text-gray-600'>
+              (icon picker, date picker, amount, add button)
+            </p>
+          </div>
+        </div>
 
-      <Animated.View style={{ height, width: '60%' }}>
-        {!isCollapsed && (
-          <View className='bg-gray-500 flex-1 justify-center items-center'>
-            <Text> stuff i want to hide </Text>
-          </View>
-        )}
-        <View
-          className='bg-gray-200 flex-row items-center justify-between px-2 border-b-[1px] border-b-black'
+        {/* COLLAPSED BAR (always visible) */}
+        <div
+          className='flex items-center justify-between px-2'
           style={{ minHeight: ENTRY_LIST_HEADER_MIN_HEIGHT }}
         >
-          <Text className='text-sm font-semibold text-gray-800'>{date}</Text>
+          <span className='text-sm font-semibold text-gray-800'>{date}</span>
 
-          <View className='flex-row items-center'>
+          <div className='flex items-center'>
             {showSearch && (
-              <TextInput
+              <input
                 value={searchText}
-                onChangeText={setSearchText}
+                onChange={(e) => setSearchText(e.target.value)}
                 placeholder='Search entries...'
-                className='w-[150px] bg-white px-2 rounded-md text-sm mr-2 h-8'
                 autoFocus
+                className='mr-2 h-8 rounded-md border border-gray-300 px-2 text-sm'
               />
             )}
 
-            <Pressable onPress={() => setShowSearch((p) => !p)}>
+            <button
+              onClick={() => setShowSearch((v) => !v)}
+              className='flex items-center justify-center'
+            >
               <MaterialCommunityIcons
                 name={showSearch ? 'close' : 'magnify'}
                 size={20}
               />
-            </Pressable>
-          </View>
-        </View>
-      </Animated.View>
-    </>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
-};
-
-export default EntryListHeader;
+}

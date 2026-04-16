@@ -73,13 +73,11 @@ export default function Layout() {
         <title>{pageTitle}</title>
       </Head>
 
-      <View className='flex-1 bg-white dark:bg-black'>
+      <View className='min-h-screen bg-white'>
         <TopNavBar />
-        <View className='flex flex-col h-screen w-[100%] '>
-          {/* ✅ All pages rendered here */}
-          <View className='flex-1 bg-white dark:bg-black'>
-            <Slot />
-          </View>
+
+        <View>
+          <Slot />
         </View>
       </View>
     </React.Fragment>

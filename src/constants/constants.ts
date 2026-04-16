@@ -2,6 +2,7 @@ import { Category, Entry } from './types';
 
 export const ENTRY_LIST_HEADER_MAX_HEIGHT = 200;
 export const ENTRY_LIST_HEADER_MIN_HEIGHT = 48;
+export const TOP_NAVBAR_HEIGHT = 80;
 
 export const CATEGORIES: Category[] = [
   {

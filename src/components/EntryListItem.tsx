@@ -19,7 +19,7 @@ const EntryListItem: React.FC<Entry> = ({
 
   return (
     <View className='flex w-[100%] h-16 flex-row justify-between items-center px-6 border-b-[1px] border-black bg-gray-50'>
-      <View className='flex-[1] items-center justify-center'>
+      <View className='flex-[1] pr-3 items-center justify-center'>
         <View
           className='w-12 h-12 rounded-full items-center justify-center'
           style={{ backgroundColor: category.color }}
@@ -31,10 +31,10 @@ const EntryListItem: React.FC<Entry> = ({
           />
         </View>
       </View>
-      <View className='flex-[2] justify-center items-start'>
-        <Text className='text-xs font-jetbrains-500'> {walletId} </Text>
+      <View className='flex-[2.5] flex-col px-3 justify-center items-start'>
+        <Text className='text-xs font-jetbrains-500 w-full'>{walletId}</Text>
         <Text
-          className='text-sm font-jetbrains-500'
+          className='text-sm font-jetbrains-500 w-full'
           style={{
             color:
               category.name == 'Savings'
@@ -47,15 +47,16 @@ const EntryListItem: React.FC<Entry> = ({
           {category.name}
         </Text>
       </View>
-      <View className='flex-[2] justify-center'>
-        <Text className='text-xs font-jetbrains-500'> Date</Text>
-        <Text className='text-sm font-jetbrains-500'> {entryDate} </Text>
+      {/* <View className='flex-[2.5] flex-col px-3 justify-center items-start'>
+        <Text className='text-xs font-jetbrains-500 w-full'> Date</Text>
+        <Text className='text-sm font-jetbrains-500 w-full'> {entryDate} </Text>
+      </View> */}
+      <View className='flex-[6] flex-col px-3 justify-center items-start'>
+        <Text className='text-xs font-jetbrains-500 w-full'>Comment</Text>
+        <Text className='text-sm font-jetbrains-500 w-full'>{comment}</Text>
       </View>
-      <View className='flex-[6] px-3 justify-center'>
-        <Text className='text-xs font-jetbrains-500'> Comment</Text>
-        <Text className='text-sm font-jetbrains-500'> {comment} </Text>
-      </View>
-      <View className='flex-[2] items-end justify-center'>
+      <View className='flex-[2] flex-col px-3 justify-center items-center'>
+        <Text className='text-xs font-jetbrains-500'>Amount</Text>
         <Text
           className='text-base font-jetbrains-500'
           style={{
